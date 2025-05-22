@@ -34,5 +34,36 @@
                 }
             }
         }
+
+        public static string ToString(Currency input)
+        {
+            switch (input) 
+            {
+                case Currency.AUD:
+                {
+                    return "AUD";
+                }
+                case Currency.USD:
+                {
+                    return "USD";
+                }
+                case Currency.EUR:
+                {
+                    return "EUR";
+                }
+                case Currency.INR:
+                {
+                    return "INR";
+                }
+                case Currency.PHP:
+                {
+                    return "PHP";
+                }
+                default:
+                {
+                    throw new ArgumentException("Currency not supported");
+                }
+            }
+        }
     }
 }
