@@ -3,6 +3,6 @@
     public class RateObject
     {
         public string Base { get; set; }
-        public Dictionary<string, decimal> Rates { get; set; } = new Dictionary<string, decimal>();
+        public Dictionary<string, double> Rates { get; set; } = new Dictionary<string, double>();
     }
 }
