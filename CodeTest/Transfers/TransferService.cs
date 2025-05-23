@@ -16,6 +16,18 @@ namespace CodeTest.Transfers
             _cacheService = cacheService;
         }
 
+        public QuoteResponse GetQuote(Guid quoteId)
+        {
+            var quote = _cacheService.GetCachedQuote(quoteId.ToString());
+
+            if (quote == null) 
+            {
+                throw new ApplicationException($"Quote with id {quoteId} not found");
+            }
+
+            return quote;
+        }
+
         public async Task<QuoteResponse> ProcessQuote(QuoteRequest request)
         {
             var rv = new QuoteResponse();

@@ -37,5 +37,25 @@ namespace CodeTest.Controllers
                 return BadRequest(ex.Message);
             }            
         }
+
+        [HttpGet(Name = "quote/{quoteId}")]
+        public async Task<ActionResult<QuoteResponse>> Get(Guid quoteId)
+        {
+            if(quoteId == Guid.Empty)
+            {
+                return BadRequest("Missing quote id");
+            }
+
+            try
+            {
+                var result = _transferService.GetQuote(quoteId);
+
+                return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
     }
 }
