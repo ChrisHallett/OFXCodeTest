@@ -58,5 +58,31 @@ namespace CodeTest.Transfers
 
             return rv;
         }
+
+        public async Task<TransferResponse> CreateTransfer(TransferRequest request)
+        {
+            var rv = new TransferResponse();
+            var existingQuote = _cacheService.GetCachedQuote(request.QuoteId.ToString());
+
+            if (existingQuote == null)
+            {
+                throw new ApplicationException("Quote not found for transfer request");
+            }
+
+            rv.TransferId = Guid.NewGuid();
+            rv.Status = Enum.GetName(TransferStatus.Processing);
+            rv.TransferDetails = new TransferDetails()
+            {
+                Payer = request.Payer,
+                Recipient = request.Recipient,
+                QuoteId = existingQuote.QuoteId
+            };
+
+            rv.EstimatedDeliveryDate = DateTime.UtcNow.AddDays(1);
+
+            _cacheService.SetCachedTransfer(rv.TransferId.ToString(), rv);
+
+            return rv;
+        }
     }
 }

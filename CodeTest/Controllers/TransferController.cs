@@ -1,10 +1,12 @@
 ﻿using CodeTest.Transfers;
+using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CodeTest.Controllers
 {
     [ApiController]
     [Route("transfers")]
+    [Produces("application/json")]
     public class TransferController : ControllerBase
     {
         private readonly ILogger<TransferController> _logger;
@@ -18,8 +20,8 @@ namespace CodeTest.Controllers
             _transferService = transferService;
         }
 
-        [HttpPost(Name = "quote")]
-        public async Task<ActionResult<QuoteResponse>> Post([FromBody] QuoteRequest data)
+        [HttpPost("quote")]
+        public async Task<ActionResult<QuoteResponse>> PostQuote([FromBody] QuoteRequest data)
         {
             if (data == null)
             {
@@ -30,7 +32,7 @@ namespace CodeTest.Controllers
             {
                 var result = await _transferService.ProcessQuote(data);
 
-                return Ok(result);
+                return Created("", result);
             }
             catch (Exception ex)
             {
@@ -38,8 +40,8 @@ namespace CodeTest.Controllers
             }            
         }
 
-        [HttpGet(Name = "quote/{quoteId}")]
-        public async Task<ActionResult<QuoteResponse>> Get(Guid quoteId)
+        [HttpGet("quote/{quoteId}")]
+        public async Task<ActionResult<QuoteResponse>> GetQuote(Guid quoteId)
         {
             if(quoteId == Guid.Empty)
             {
@@ -51,6 +53,26 @@ namespace CodeTest.Controllers
                 var result = _transferService.GetQuote(quoteId);
 
                 return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+        [HttpPost]
+        public async Task<ActionResult<TransferResponse>> PostTransfer(TransferRequest request)
+        {
+            if (request == null)
+            {
+                return BadRequest("Missing expected input data");
+            }
+
+            try
+            {
+                var result = await _transferService.CreateTransfer(request);
+
+                return Created("", result);
             }
             catch (Exception ex)
             {

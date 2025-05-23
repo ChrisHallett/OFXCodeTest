@@ -6,8 +6,9 @@ namespace CodeTest.Rates
     public class CacheService : ICacheService
     {
         private readonly IMemoryCache _memoryCache;
-        private readonly int _apiRateCacheLifetime = 30;
-        private readonly int _quoteCacheLifetime = 120;
+        private readonly int _apiRateCacheLifetime = 60;
+        private readonly int _quoteCacheLifetime = 240;
+        private readonly int _transferCacheLifetime = 240;
 
         public CacheService(IMemoryCache memoryCache) 
         { 
@@ -17,6 +18,16 @@ namespace CodeTest.Rates
         public QuoteResponse GetCachedQuote(string expectedKey)
         {
             if (!_memoryCache.TryGetValue(expectedKey, out QuoteResponse cachedValue))
+            {
+                return null;
+            }
+
+            return cachedValue;
+        }
+
+        public TransferResponse GetCachedTransfer(string expectedKey)
+        {
+            if (!_memoryCache.TryGetValue(expectedKey, out TransferResponse cachedValue))
             {
                 return null;
             }
@@ -38,6 +49,12 @@ namespace CodeTest.Rates
         {
             var cacheEntryOptions = new MemoryCacheEntryOptions().SetSlidingExpiration(TimeSpan.FromSeconds(_apiRateCacheLifetime));
             _memoryCache.Set<decimal>(expectedKey, cachedValue, cacheEntryOptions);
+        }
+
+        public void SetCachedTransfer(string expectedKey, TransferResponse cachedValue)
+        {
+            var cacheEntryOptions = new MemoryCacheEntryOptions().SetSlidingExpiration(TimeSpan.FromSeconds(_transferCacheLifetime));
+            _memoryCache.Set<TransferResponse>(expectedKey, cachedValue, cacheEntryOptions);
         }
 
         public void SetCacheQuote(string expectedKey, QuoteResponse cachedValue)
