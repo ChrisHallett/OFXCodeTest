@@ -35,7 +35,7 @@ namespace CodeTest.Rates
             }
         }
 
-        public async Task<double> GetRate(Currency buyCurrency, Currency sellCurrency)
+        public async Task<decimal> GetRate(Currency buyCurrency, Currency sellCurrency)
         {
             var expectedKey = $"{buyCurrency}>{sellCurrency}";
 
@@ -65,7 +65,7 @@ namespace CodeTest.Rates
                 _cacheService.SetCache(expectedKey, foundRate.Value);
             }
 
-            return (double)cachedValue;
+            return (decimal)cachedValue;
         }
     }
 }

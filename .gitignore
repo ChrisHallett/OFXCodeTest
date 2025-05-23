@@ -57,3 +57,9 @@ nunit-*.xml
 *.v2
 
 WebApplication1/.vs/WebApplication1/v17/.suo
+
+WebApplication1/.vs/WebApplication1/v17/DocumentLayout.json
+
+WebApplication1/.vs/WebApplication1/v17/DocumentLayout.backup.json
+
+WebApplication1/.vs/WebApplication1/config/applicationhost.config

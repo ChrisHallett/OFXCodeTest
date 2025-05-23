@@ -4,6 +4,6 @@ namespace CodeTest.Rates
 {
     public interface IUniRateService
     {
-        Task<double> GetRate(Currency buyCurrency, Currency sellCurrency);
+        Task<decimal> GetRate(Currency buyCurrency, Currency sellCurrency);
     }
 }

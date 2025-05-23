@@ -2,7 +2,7 @@
 {
     public interface ICacheService
     {
-        double? GetFromCache(string expectedKey);
-        void SetCache(string expectedKey, double cachedValue);
+        decimal? GetFromCache(string expectedKey);
+        void SetCache(string expectedKey, decimal cachedValue);
     }
 }

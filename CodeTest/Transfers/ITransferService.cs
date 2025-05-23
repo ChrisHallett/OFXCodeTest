@@ -2,6 +2,6 @@
 {
     public interface ITransferService
     {
-        QuoteResponse ProcessQuote(QuoteRequest request);
+        Task<QuoteResponse> ProcessQuote(QuoteRequest request);
     }
 }

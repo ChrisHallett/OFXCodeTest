@@ -11,8 +11,9 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-builder.Services.AddSingleton<UniRateService>();
-builder.Services.AddScoped<TransferService>();
+builder.Services.AddScoped<ITransferService, TransferService>();
+builder.Services.AddScoped<ICacheService, CacheService>();
+builder.Services.AddScoped<IUniRateService, UniRateService>();
 
 
 var app = builder.Build();

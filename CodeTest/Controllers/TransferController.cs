@@ -1,6 +1,5 @@
 ﻿using CodeTest.Transfers;
 using Microsoft.AspNetCore.Mvc;
-using Newtonsoft.Json;
 
 namespace CodeTest.Controllers
 {
@@ -20,21 +19,15 @@ namespace CodeTest.Controllers
         }
 
         [HttpPost(Name = "quote")]
-        public QuoteResponse Post([FromBody] string data)
+        public async Task<QuoteResponse> Post([FromBody] QuoteRequest data)
         {
-            if (string.IsNullOrEmpty(data))
+            if (data == null)
             {
                 throw new ApplicationException("Missing expected input data");
             }
 
-            var inputs = JsonConvert.DeserializeObject<QuoteRequest>(data);
 
-            if (inputs == null)
-            {
-                throw new ApplicationException("Issue processing inputs");
-            }
-
-            var result = _transferService.ProcessQuote(inputs);
+            var result = await _transferService.ProcessQuote(data);
 
             return result;
         }

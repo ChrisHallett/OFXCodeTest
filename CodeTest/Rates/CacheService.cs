@@ -11,9 +11,9 @@ namespace CodeTest.Rates
             _memoryCache = memoryCache;
         }
 
-        public double? GetFromCache(string expectedKey)
+        public decimal? GetFromCache(string expectedKey)
         {
-            if (!_memoryCache.TryGetValue(expectedKey, out double cachedValue))
+            if (!_memoryCache.TryGetValue(expectedKey, out decimal cachedValue))
             {
                 return null;
             }
@@ -21,10 +21,10 @@ namespace CodeTest.Rates
             return cachedValue;
         }
 
-        public void SetCache(string expectedKey, double cachedValue)
+        public void SetCache(string expectedKey, decimal cachedValue)
         {
             var cacheEntryOptions = new MemoryCacheEntryOptions().SetSlidingExpiration(TimeSpan.FromSeconds(30));
-            _memoryCache.Set<double>(expectedKey, cachedValue, cacheEntryOptions);
+            _memoryCache.Set<decimal>(expectedKey, cachedValue, cacheEntryOptions);
         }
     }
 }

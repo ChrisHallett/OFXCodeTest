@@ -1,12 +1,19 @@
 ﻿using CodeTest.Helpers;
+using CodeTest.Rates;
 
 namespace CodeTest.Transfers
 {
     public class TransferService : ITransferService
     {
-        public TransferService() { }
+        private readonly IUniRateService _rateService;
 
-        public QuoteResponse ProcessQuote(QuoteRequest request)
+        public TransferService(
+            IUniRateService rateService) 
+        {
+            _rateService = rateService;
+        }
+
+        public async Task<QuoteResponse> ProcessQuote(QuoteRequest request)
         {
             var rv = new QuoteResponse();
 
@@ -24,7 +31,13 @@ namespace CodeTest.Transfers
                 throw new ApplicationException("Amount must be greater than zero");
             }
 
+            var rate = await _rateService.GetRate(buyCurrency, sellCurrency);
+            var inverseRate = await _rateService.GetRate(sellCurrency, buyCurrency);
 
+            rv.OfxRate = rate;
+            rv.InverseOfxRate = inverseRate;
+            rv.QuoteId = Guid.NewGuid();
+            rv.ConvertedAmount = decimal.Round(request.Amount * rate, 2);
 
             return rv;
         }
