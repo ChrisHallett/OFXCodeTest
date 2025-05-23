@@ -6,11 +6,14 @@ namespace CodeTest.Transfers
     public class TransferService : ITransferService
     {
         private readonly IUniRateService _rateService;
+        private readonly ICacheService _cacheService;
 
         public TransferService(
-            IUniRateService rateService) 
+            IUniRateService rateService,
+            ICacheService cacheService) 
         {
             _rateService = rateService;
+            _cacheService = cacheService;
         }
 
         public async Task<QuoteResponse> ProcessQuote(QuoteRequest request)
@@ -38,6 +41,8 @@ namespace CodeTest.Transfers
             rv.InverseOfxRate = inverseRate;
             rv.QuoteId = Guid.NewGuid();
             rv.ConvertedAmount = decimal.Round(request.Amount * rate, 2);
+
+            _cacheService.SetCacheQuote(rv.QuoteId.ToString(), rv);
 
             return rv;
         }

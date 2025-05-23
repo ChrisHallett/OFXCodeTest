@@ -1,14 +1,27 @@
-﻿using Microsoft.Extensions.Caching.Memory;
+﻿using CodeTest.Transfers;
+using Microsoft.Extensions.Caching.Memory;
 
 namespace CodeTest.Rates
 {
     public class CacheService : ICacheService
     {
         private readonly IMemoryCache _memoryCache;
+        private readonly int _apiRateCacheLifetime = 30;
+        private readonly int _quoteCacheLifetime = 120;
 
         public CacheService(IMemoryCache memoryCache) 
         { 
             _memoryCache = memoryCache;
+        }
+
+        public QuoteResponse GetCachedQuote(string expectedKey)
+        {
+            if (!_memoryCache.TryGetValue(expectedKey, out QuoteResponse cachedValue))
+            {
+                return null;
+            }
+
+            return cachedValue;
         }
 
         public decimal? GetFromCache(string expectedKey)
@@ -23,8 +36,14 @@ namespace CodeTest.Rates
 
         public void SetCache(string expectedKey, decimal cachedValue)
         {
-            var cacheEntryOptions = new MemoryCacheEntryOptions().SetSlidingExpiration(TimeSpan.FromSeconds(30));
+            var cacheEntryOptions = new MemoryCacheEntryOptions().SetSlidingExpiration(TimeSpan.FromSeconds(_apiRateCacheLifetime));
             _memoryCache.Set<decimal>(expectedKey, cachedValue, cacheEntryOptions);
+        }
+
+        public void SetCacheQuote(string expectedKey, QuoteResponse cachedValue)
+        {
+            var cacheEntryOptions = new MemoryCacheEntryOptions().SetSlidingExpiration(TimeSpan.FromSeconds(_quoteCacheLifetime));
+            _memoryCache.Set<QuoteResponse>(expectedKey, cachedValue, cacheEntryOptions);
         }
     }
 }
