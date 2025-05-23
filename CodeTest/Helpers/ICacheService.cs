@@ -1,6 +1,6 @@
-﻿using CodeTest.Transfers;
+﻿using CodeTest.Transfers.DTO;
 
-namespace CodeTest.Rates
+namespace CodeTest.Helpers
 {
     public interface ICacheService
     {

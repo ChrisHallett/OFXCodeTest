@@ -1,5 +1,5 @@
 ﻿using CodeTest.Transfers;
-using Microsoft.AspNetCore.Http.HttpResults;
+using CodeTest.Transfers.DTO;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CodeTest.Controllers
@@ -25,7 +25,7 @@ namespace CodeTest.Controllers
         {
             if (data == null)
             {
-               return  BadRequest("Missing expected input data");
+                return BadRequest("Missing expected input data");
             }
 
             try
@@ -37,13 +37,13 @@ namespace CodeTest.Controllers
             catch (Exception ex)
             {
                 return BadRequest(ex.Message);
-            }            
+            }
         }
 
         [HttpGet("quote/{quoteId}")]
-        public async Task<ActionResult<QuoteResponse>> GetQuote(Guid quoteId)
+        public ActionResult<QuoteResponse> GetQuote(Guid quoteId)
         {
-            if(quoteId == Guid.Empty)
+            if (quoteId == Guid.Empty)
             {
                 return BadRequest("Missing quote id");
             }
@@ -73,6 +73,26 @@ namespace CodeTest.Controllers
                 var result = await _transferService.CreateTransfer(request);
 
                 return Created("", result);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+        [HttpGet("{transferId}")]
+        public ActionResult<TransferResponse> GetTransfer(Guid transferId)
+        {
+            if (transferId == Guid.Empty)
+            {
+                return BadRequest("Missing transfer id");
+            }
+
+            try
+            {
+                var result = _transferService.GetTransfer(transferId);
+
+                return Ok(result);
             }
             catch (Exception ex)
             {

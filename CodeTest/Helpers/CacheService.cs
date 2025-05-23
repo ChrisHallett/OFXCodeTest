@@ -1,7 +1,7 @@
-﻿using CodeTest.Transfers;
+﻿using CodeTest.Transfers.DTO;
 using Microsoft.Extensions.Caching.Memory;
 
-namespace CodeTest.Rates
+namespace CodeTest.Helpers
 {
     public class CacheService : ICacheService
     {
@@ -10,8 +10,8 @@ namespace CodeTest.Rates
         private readonly int _quoteCacheLifetime = 240;
         private readonly int _transferCacheLifetime = 240;
 
-        public CacheService(IMemoryCache memoryCache) 
-        { 
+        public CacheService(IMemoryCache memoryCache)
+        {
             _memoryCache = memoryCache;
         }
 
@@ -48,19 +48,19 @@ namespace CodeTest.Rates
         public void SetCache(string expectedKey, decimal cachedValue)
         {
             var cacheEntryOptions = new MemoryCacheEntryOptions().SetSlidingExpiration(TimeSpan.FromSeconds(_apiRateCacheLifetime));
-            _memoryCache.Set<decimal>(expectedKey, cachedValue, cacheEntryOptions);
+            _memoryCache.Set(expectedKey, cachedValue, cacheEntryOptions);
         }
 
         public void SetCachedTransfer(string expectedKey, TransferResponse cachedValue)
         {
             var cacheEntryOptions = new MemoryCacheEntryOptions().SetSlidingExpiration(TimeSpan.FromSeconds(_transferCacheLifetime));
-            _memoryCache.Set<TransferResponse>(expectedKey, cachedValue, cacheEntryOptions);
+            _memoryCache.Set(expectedKey, cachedValue, cacheEntryOptions);
         }
 
         public void SetCacheQuote(string expectedKey, QuoteResponse cachedValue)
         {
             var cacheEntryOptions = new MemoryCacheEntryOptions().SetSlidingExpiration(TimeSpan.FromSeconds(_quoteCacheLifetime));
-            _memoryCache.Set<QuoteResponse>(expectedKey, cachedValue, cacheEntryOptions);
+            _memoryCache.Set(expectedKey, cachedValue, cacheEntryOptions);
         }
     }
 }

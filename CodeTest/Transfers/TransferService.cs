@@ -1,5 +1,6 @@
 ﻿using CodeTest.Helpers;
 using CodeTest.Rates;
+using CodeTest.Transfers.DTO;
 
 namespace CodeTest.Transfers
 {
@@ -83,6 +84,18 @@ namespace CodeTest.Transfers
             _cacheService.SetCachedTransfer(rv.TransferId.ToString(), rv);
 
             return rv;
+        }
+
+        public TransferResponse GetTransfer(Guid transferId)
+        {
+            var transfer = _cacheService.GetCachedTransfer(transferId.ToString());
+
+            if (transfer == null)
+            {
+                throw new ApplicationException($"Transfer with id {transferId} not found");
+            }
+
+            return transfer;
         }
     }
 }

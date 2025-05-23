@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace CodeTest.Transfers
+namespace CodeTest.Transfers.DTO
 {
     public class QuoteRequest
     {

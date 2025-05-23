@@ -1,4 +1,4 @@
-﻿namespace CodeTest.Transfers
+﻿namespace CodeTest.Transfers.DTO
 {
     public class QuoteResponse
     {
