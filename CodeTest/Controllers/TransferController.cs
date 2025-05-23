@@ -19,17 +19,23 @@ namespace CodeTest.Controllers
         }
 
         [HttpPost(Name = "quote")]
-        public async Task<QuoteResponse> Post([FromBody] QuoteRequest data)
+        public async Task<ActionResult<QuoteResponse>> Post([FromBody] QuoteRequest data)
         {
             if (data == null)
             {
-                throw new ApplicationException("Missing expected input data");
+               return  BadRequest("Missing expected input data");
             }
 
+            try
+            {
+                var result = await _transferService.ProcessQuote(data);
 
-            var result = await _transferService.ProcessQuote(data);
-
-            return result;
+                return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }            
         }
     }
 }
