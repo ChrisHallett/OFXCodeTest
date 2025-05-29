@@ -67,3 +67,18 @@ WebApplication1/.vs/WebApplication1/config/applicationhost.config
 WebApplication1/.vs/WebApplication1/v17/TestStore/0/001.testlog
 
 WebApplication1/.vs/WebApplication1/v17/TestStore/0/testlog.manifest
+
+CodeTest/.vs/CodeTest/v17/
+
+*.bin
+
+.vs/slnx.sqlite
+
+.vs/VSWorkspaceState.json
+
+.vs/OFXCodeTest/v17/DocumentLayout.json
+
+.vs/OFXCodeTest/v17/DocumentLayout.backup.json
+
+.vs/OFXCodeTest/v17/.wsuo
+
